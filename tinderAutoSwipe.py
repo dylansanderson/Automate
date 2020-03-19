@@ -72,7 +72,7 @@ class TinderBot():
         iconPic = self.driver.find_element_by_xpath('//*[@id="matchListNoMessages"]/div[35]/div[4]/a/div[1]')
         iconPic.click()
     def sendMessagesToMessaged(self,numMessages,message):
-        index = 70
+        index = 2
         try:
             self.close_popup()
             sleep(1)
