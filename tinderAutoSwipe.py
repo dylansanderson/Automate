@@ -33,10 +33,10 @@ class TinderBot():
             self.driver.switch_to_window(self.driver.window_handles[1])
 
         email_in = self.driver.find_element_by_xpath('//*[@id="email"]')  #email query (facebook)
-        email_in.send_keys("xlsandersonlx@yahoo.com")
+        email_in.send_keys("username")
 
         pw_in = self.driver.find_element_by_xpath('//*[@id="pass"]')  #password query (facebook)
-        pw_in.send_keys("mattisreadyy")
+        pw_in.send_keys("password")
 
         login_btn = self.driver.find_element_by_xpath('//*[@id="u_0_0"]') #Login Button
         login_btn.click()
