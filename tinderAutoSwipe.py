@@ -183,4 +183,4 @@ bot = TinderBot()
 bot.login()
 bot.auto_swipe()
 bot.driver.close()
-bot.driver.quit(
+bot.driver.quit()
