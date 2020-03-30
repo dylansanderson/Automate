@@ -27,7 +27,7 @@ def shorten(s, subs):
 
 
 initialURL = 'https://www.azlyrics.com/'
-songs = ["soulja boy whats hannenin"]
+songs = ["Yellow Submarine the beatles"]  #enter desired songs into this list
 songIndex = 0
 language = ['en-US','en-GB']
 
