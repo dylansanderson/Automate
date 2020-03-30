@@ -10,7 +10,7 @@ import random
 """
 Lyric Scraper + text to speech generator
 
-1) Go to website 'AZLyrics.com
+1) Go to website 'AZLyrics.com'
 2) Find search bar, enter song, click search
 3) Using bs4, extract song lyrics and put into a string, print the string to console
 4) create text to speech object, passing in the string. Save this as an mp3 file
