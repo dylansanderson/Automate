@@ -1,9 +1,8 @@
-from selenium import webdriver
 from time import sleep
 import bs4 as BeautifulSoup
 import urllib.request
 import statistics
-from selenium.webdriver.common.keys import Keys
+
 
 """
 This program searches COMPLETED/SOLD listings only on eBay for your search query.
