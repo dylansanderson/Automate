@@ -1,7 +1,13 @@
 from selenium import webdriver
 from time import sleep
+import random
+def reverse(s): 
+  str = "" 
+  for i in s: 
+    str = i + str
+  return str
 
-
+indices = ["1","2","3","4","5","6","7"]
 class TinderBot():
     def __init__(self):
         self.driver = webdriver.Chrome(executable_path=r"C:\Users\dylan\Desktop\303q\chromedriver.exe")        #enter the path of your driver here
@@ -33,7 +39,7 @@ class TinderBot():
             self.driver.switch_to_window(self.driver.window_handles[1])
 
         email_in = self.driver.find_element_by_xpath('//*[@id="email"]')  #email query (facebook)
-        email_in.send_keys("username")
+        email_in.send_keys("facebook-email")
 
         pw_in = self.driver.find_element_by_xpath('//*[@id="pass"]')  #password query (facebook)
         pw_in.send_keys("password")
@@ -54,8 +60,7 @@ class TinderBot():
         dislike_btn = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/button[1]')
         dislike_btn.click()
 
-
-    def sendBio(self,numMessages):
+    def sendBioInReverse(self,numMessages):
         try:
             self.close_popup()
             sleep(1)
@@ -63,24 +68,34 @@ class TinderBot():
 
         except Exception:
             pass
-        cookiePopUp = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[3]/div/button')
+        cookiePopUp = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[3]/div/div/div/button')
         cookiePopUp.click()
         self.driver.maximize_window()
         for i in range(0,numMessages):
-            thumbnail = self.driver.find_element_by_xpath('//*[@id="matchListNoMessages"]/div[1]/div[5]/a/div[1]')
+            thumbnail = self.driver.find_element_by_xpath('//*[@id="matchListNoMessages"]/div[1]/div[' + random.choice(indices) + ']/a/div[1]')
             thumbnail.click()
             sleep(3)
-            bio = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div/div[2]/div/div[1]/div/div/div[2]/div[2]/div/span')
-            message = bio.text
+            try:
+                bio = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div/div[2]/div/div[1]/div/div/div[2]/div[2]/div/span')
+                message = bio.text
+            except:
+                message = "( )"
+            message = reverse(message)
+            if len(message) == 1 or len(message) == 0:
+                message = "."
             textArea = self.driver.find_element_by_xpath('//*[@id="chat-text-area"]')
-            textArea.send_keys(message)
-            sleep(1)
+            try:
+                textArea.send_keys(message)
+            except:
+                message = "Cannot Translate"
+                textArea.send_keys(message)
+            sleep(2)
             submit = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div/div[1]/div/div/div[3]/form/button')
             submit.click()
-            sleep(1)
+            sleep(3)
             matchesButton = self.driver.find_element_by_xpath('//*[@id="match-tab"]')
             matchesButton.click()
-            sleep(1)
+            sleep(3)
 
     def sendMessagesToMessaged(self,numMessages,message):
         index = 2
@@ -91,6 +106,7 @@ class TinderBot():
             sleep(1)
         except Exception:
             pass
+        
         cookiePopUp = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[3]/div/button')                #close cookie notification pop-up
         cookiePopUp.click()
         matchesButton = self.driver.find_element_by_xpath('//*[@id="messages-tab"]')
@@ -114,7 +130,7 @@ class TinderBot():
             sleep(1)
         except Exception:
             pass
-        cookiePopUp = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[3]/div/button')
+        cookiePopUp = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[3]/div/div/div/button')
         cookiePopUp.click()
         for i in range(0,numMessages):
             thumbnail = self.driver.find_element_by_xpath('//*[@id="matchListNoMessages"]/div[1]/div[2]/a/div[1]')                       #find thumbnail, click
@@ -138,6 +154,11 @@ class TinderBot():
             self.close_popup2()
         except:
             pass
+        try:
+            cookiePopUp = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[3]/div/div/div/button')
+            cookiePopUp.click()
+        except:
+            pass
         while True:
             try:
                 sleep(0.3)
@@ -152,7 +173,7 @@ class TinderBot():
                         try:                  
                             self.closeEmailPopUp()
                         except Exception:
-                            sleep(1000)
+                            sleep(600)
                             self.driver.refresh()            
                             sleep(5)
 
@@ -181,6 +202,6 @@ class TinderBot():
 
 bot = TinderBot()
 bot.login()
-bot.sendBio(3)
+bot.auto_swipe()
 bot.driver.close()
 bot.driver.quit()
