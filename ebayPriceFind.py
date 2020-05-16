@@ -2,6 +2,10 @@ from time import sleep
 import bs4 as BeautifulSoup
 import urllib.request
 import statistics
+import matplotlib.pyplot as plt
+import numpy as np
+import time
+
 
 
 """
@@ -24,58 +28,67 @@ Median Price of modern warfare ps4: $41.5
 
 """
 
-
-def shorten(s, subs):
-    i = s.index(subs)          #function to shorten string pulled from html
-    return s[:i+len(subs)]
-
-
 def average(listOfPrices):
     total = 0
     for i in listOfPrices:
         total += i
     return total/len(listOfPrices)
 
+inputList = []
+
+
 searchQuery = input("enter an item to search for on eBay")
 searchQuery = searchQuery.replace(' ','+')      #replace spaces with '+' to feed into url request
 print(searchQuery)
-
+discardedResults = []
 listOfPrices = []
 pageNumber = 1
-
-while pageNumber < 4:
-    url = urllib.request.urlopen('https://www.ebay.com/sch/i.html?_nkw=' + searchQuery + '&rt=nc&LH_Sold=1&LH_Complete=1&_blrs=spell_check&_pgn='+str(pageNumber)).read()  #ebay url of search query
+now = time.time()
+while pageNumber < 2:
+    url = urllib.request.urlopen('https://www.ebay.com/sch/i.html?_nkw=' + searchQuery + '&rt=nc&LH_Sold=1&LH_Complete=1&_ipg=200&_blrs=spell_check&_pgn='+str(pageNumber)).read()  #ebay url of search query
     soup = BeautifulSoup.BeautifulSoup(url,'lxml')
     prices = soup.find_all('span',class_='s-item__price')     #find the price of each item on the page
     for p in prices:
         priceString = p.get_text()
         priceString = priceString.replace('$','')         #remove dollar sign before storing as float
-        try:
-            priceString = priceString.replace(',','')       #if there is a comma in price, delete the comma
-            priceString = shorten(priceString,' ')           #if the price is something like '$49.99 to $59.99' we shorten the string to include just first the number
-            priceString = priceString[:-1]                   #remove the last character, ' '
-        except:
-            pass
-        try:
+        priceString = priceString.replace(',','')      #remove comma if in the string
+        if not ' ' in priceString:           # if the price is a range, i.e. "$19.99-$49.99", do not include it in the listOfPrices
             priceString = float(priceString)
             listOfPrices.append(priceString)
-        except:
-            pass                      
+        else:
+            discardedResults.append(priceString)          
     pageNumber += 1
 
+runTime = time.time() - now
 
 
 for i in range(int(len(listOfPrices)/5)):
     listOfPrices.remove(max(listOfPrices))           #for better precision, remove the max and min of the list n times before calculating avg. and median
     listOfPrices.remove(min(listOfPrices))
 
+for i in range(0,len(listOfPrices)):
+    inputList.append(i)
 
-median = statistics.median(listOfPrices)
-median = str(median)
-searchQuery = searchQuery.replace('+',' ')   #switch '+' back to spaces
+print(discardedResults)
+print("Runtime: " + str(runTime))
+median = str(statistics.median(listOfPrices))
 print("Found "+str(len(listOfPrices)) +" recently completed/sold transactions for "+ searchQuery + " on eBay: " + "\n")
 print(listOfPrices)
 print("\n")
 print("Average price of " +searchQuery + ": $" +str(average(listOfPrices)) + "\n")
 print("Median Price of " + searchQuery + ": $" + median)
+
+
+#find Mean Average Deviation
+yIncrement = np.mean(np.absolute(listOfPrices-np.mean(listOfPrices)))
+yTickList = np.arange(min(listOfPrices) - min(listOfPrices)/10,max(listOfPrices) + max(listOfPrices)/10,yIncrement)
+searchQuery = searchQuery.replace('+',' ') 
+plt.plot(inputList,listOfPrices,'r^')
+plt.ylim(0.95*min(listOfPrices),max(listOfPrices))
+plt.yticks(yTickList)
+plt.xlabel("search result number")
+plt.ylabel("Price of " + searchQuery + " ($)")
+plt.title("Graph of " + searchQuery + "\n" + "Median Price: $" + median + "\n" + "Average Price: $" + str(average(listOfPrices)))
+plt.grid(True,axis = 'y',alpha = 0.75, ds = 'steps-pre')
+plt.show()
 
