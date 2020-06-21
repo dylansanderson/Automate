@@ -89,6 +89,6 @@ plt.yticks(yTickList)
 plt.xlabel("search result number")
 plt.ylabel("Price of " + searchQuery + " ($)")
 plt.title("Graph of " + searchQuery + "\n" + "Median Price: $" + median + "\n" + "Average Price: $" + str(average(listOfPrices)))
-plt.grid(True,axis = 'y',alpha = 0.75, ds = 'steps-pre')
+plt.grid(True,axis = 'y',alpha = 0.75)
 plt.show()
 
