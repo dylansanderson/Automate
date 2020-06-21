@@ -44,8 +44,8 @@ discardedResults = []
 listOfPrices = []
 pageNumber = 1
 now = time.time()
-while pageNumber < 2:
-    url = urllib.request.urlopen('https://www.ebay.com/sch/i.html?_nkw=' + searchQuery + '&rt=nc&LH_Sold=1&LH_Complete=1&_ipg=200&_blrs=spell_check&_pgn='+str(pageNumber)).read()  #ebay url of search query
+while pageNumber < 3:
+    url = urllib.request.urlopen('https://www.ebay.com/sch/i.html?_nkw=' + searchQuery + '&rt=nc&LH_Sold=1&LH_Complete=1&_blrs=spell_check&_pgn='+str(pageNumber)).read()  #ebay url of search query
     soup = BeautifulSoup.BeautifulSoup(url,'lxml')
     prices = soup.find_all('span',class_='s-item__price')     #find the price of each item on the page
     for p in prices:
