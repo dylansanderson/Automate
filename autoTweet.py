@@ -7,7 +7,7 @@ Auto-tweeting program.
 
 """
 
-tweets = ["hi","githyjub","linyetjus torvtrhalds","sweditryhsh fish","chef","#GordonRamsay ."]    #List of desired tweets to send
+tweets = ["#hello world","#GordonRamsay .","Github.org ", "Spam Tweet"]    #List of desired tweets to send
 alreadyTweetedStrings = []      
 
 class Twitter:
