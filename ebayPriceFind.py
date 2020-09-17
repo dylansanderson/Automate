@@ -74,7 +74,8 @@ avg = str(round(avg,2))
 searchQuery = searchQuery.replace('+',' ') 
 print("Average price of " +searchQuery + ": $" +str(avg) + "\n")
 print("Median Price of " + searchQuery + ": $" + median)
-
+print("Disregarding " + str(len(discardedResults)) + " Results: " + "\n")
+print(discardedResults)
 #find Mean Average Deviation
 yIncrement = np.mean(np.absolute(listOfPrices-np.mean(listOfPrices)))
 yTickList = np.arange(min(listOfPrices) - min(listOfPrices)/10,max(listOfPrices) + max(listOfPrices)/10,yIncrement)
