@@ -9,14 +9,11 @@ import random
 
 """
 Lyric Scraper + text to speech generator
-
 1) Go to website 'AZLyrics.com'
 2) Find search bar, enter song, click search
 3) Using bs4, extract song lyrics and put into a string, print the string to console
 4) create text to speech object, passing in the string. Save this as an mp3 file
 5) repeat until no more songs
-
-
 """
 
 
@@ -27,12 +24,12 @@ def shorten(s, subs):
 
 
 initialURL = 'https://www.azlyrics.com/'
-songs = ["Yellow Submarine the beatles"]  #enter desired songs into this list
+songs = ["smash mouth all star","hey jude beatles"]  #enter desired songs into this list
 songIndex = 0
 language = ['en-US','en-GB']
 
 
-driver = webdriver.Chrome(executable_path = r'C:\Users\dylan\Desktop\303q\chromedriver.exe')  #enter path of your chrome driver here
+driver = webdriver.Chrome(executable_path = r'C:\Users\dylan\Desktop\chromedriver.exe')  #enter path of your chrome driver here
 driver.get(initialURL)
 sleep(2)
 while songIndex < len(songs):
@@ -41,8 +38,8 @@ while songIndex < len(songs):
     searchBTN = driver.find_element_by_xpath('//*[@id="search-collapse"]/form/div/span/button')
     searchBTN.click()
     sleep(3)
-    try:                                                                                                                             #two possible xpaths for the first result of the search query
-        firstResult = driver.find_element_by_xpath('/html/body/div[3]/div/div/div/table/tbody/tr[1]/td/a/b')           
+    try:                                                                                                                      #two possible xpaths for the first result of the search query
+        firstResult = driver.find_element_by_xpath('/html/body/div[2]/div/div/div/table/tbody/tr[1]/td/a')           
     except Exception:
         try:
             print("exception occured")
@@ -58,10 +55,8 @@ while songIndex < len(songs):
             sleep(4)
             firstResult = driver.find_element_by_xpath('/html/body/div[3]/div/div/div/table/tbody/tr[2]/td/a/b')
             
-
     firstResult.click()
     sleep(2)
-    driver.close()                                       #close initial window
     driver.switch_to_window(driver.window_handles[0])    
     pageContent = ""
     currentURL = driver.current_url
