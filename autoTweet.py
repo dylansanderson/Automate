@@ -30,6 +30,7 @@ class Twitter:
        
     def quit(self):
         self.driver.quit()
+        print("Closing Driver")
 
 t = Twitter()
 t.login()
