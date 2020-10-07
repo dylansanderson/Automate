@@ -165,7 +165,7 @@ class TinderBot():
                             print("Sleeping for 1 min...")
                             sleep(60)
                             self.driver.refresh()            
-                            sleep(5)
+                           
 
     def closeEmailPopUp(self):
         remindMeLater = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div[2]/div[2]/button[2]')
