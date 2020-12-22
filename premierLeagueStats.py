@@ -73,6 +73,7 @@ def convertHeightToInches(s):
     
 urlIDs = ['375','360','361','367','364','359','363','376','398','383','370','331','357','371','382','380','384','368','362']     #ID of each premier league team, from ESPN website
 
+random.shuffle(urlIDs)
 WORDS = []
 KEEPERS = []
 HEIGHTS = []
@@ -97,7 +98,6 @@ for index in range(0,len(urlIDs)):
     KEEPERS.remove(KEEPERS[0])
     WORDS.remove(WORDS[0])
     WORDS = WORDS + KEEPERS
-    totalPlayers = len(WORDS)
     for w in WORDS:
         print(w)
         NAMES.append(getFirstName(w))
@@ -134,7 +134,7 @@ for index in range(0,len(urlIDs)):
     plt.plot(NAMES,WEIGHTS,'b^')
     ft = int(Average(HEIGHTS)//12)
     inches = round(Average(HEIGHTS)%12,2)
-    plt.text(0,(Average(WEIGHTS))/2,"AVERAGE HEIGHT: " + str(ft)+"ft "+ str(inches) + " in.",fontsize = 14)
+    plt.text(0,100,"AVERAGE HEIGHT: " + str(ft)+"ft "+ str(inches) + " in.",fontsize = 14)
     plt.show()
     WORDS = []
     KEEPERS = []
@@ -144,3 +144,4 @@ for index in range(0,len(urlIDs)):
     POSITIONS = []
     NAMES = []
     
+
