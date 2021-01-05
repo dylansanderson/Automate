@@ -19,9 +19,7 @@ try:
     choice = int(input("CHOOSE:" + "\n" + "1 for EPL" + "\n" + "2 for MLS" + "\n" + "3 for champions league" + "\n" + "4 for La Liga" + "\n" + "5 for Liga MX (Mexico Division 1)"))
 except Exception:
     choice = randint(1,5)
-
-#while type(choice) != int or abs(choice) > 5:
-  #  choice = int(input("CHOOSE:" + "\n" + "1 for EPL" + "\n" + "2 for MLS" + "\n" + "3 for champions league" + "\n" + "4 for La Liga" + "\n" + "5 for Liga MX (Mexico Division 1)"))
+    
 SEASONS = [str(x) for x in range(2007,2021)]
 GOALSSCORED, ASSISTS = [],[]
 GOALSALLTIME, ASSISTSALLTIME = [],[]
