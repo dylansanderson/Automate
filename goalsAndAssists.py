@@ -51,7 +51,7 @@ for i in range(0,len(SEASONS)):
             url = urllib.request.urlopen("https://www.espn.com/soccer/stats/_/league/MEX.1/season/" + SEASONS[i])
         except Exception:
             url = urllib.request.urlopen("https://www.espn.com/soccer/stats/_/league/MEX.1/season/" + SEASONS[i+1])
-    soup = BeautifulSoup.BeautifulSoup(url,"lxml")
+    soup = BeautifulSoup.BeautifulSoup(url,"html")
     firstTable = soup.find_all("table")[0]
     secondTable = soup.find_all("table")[1]
     firstTableTrees = firstTable.find_all("tr")
@@ -102,12 +102,14 @@ elif choice == 5:
 plt.tick_params(axis='x', which='major', pad=-5)
 plt.xticks(range(len(TOPSCORERNAMES)),TOPSCORERNAMES,rotation = 50,fontsize = 11.5)
 plt.ylabel("GOALS",fontsize = 18)
+plt.subplots_adjust(bottom = 0.25)
 plt.grid(True)
 plt.figure(2)
 plt.plot(TOPASSISTERNAMES,ASSISTSALLTIME,'ro')
 plt.tick_params(axis='x', which='major', pad=-5)
 plt.xticks(range(len(TOPASSISTERNAMES)),TOPASSISTERNAMES,rotation = 50,fontsize = 11.5)
 plt.grid(True)
+plt.subplots_adjust(bottom = 0.25)
 plt.ylabel("ASSISTS",fontsize = 18)
 if choice == 1:
     plt.title("MOST ASSISTS - ENGLISH PREMIER LEAGUE - BY SEASON")
@@ -120,3 +122,4 @@ elif choice == 4:
 elif choice == 5:
     plt.title("MOST ASSISTS - LIGA MX - BY SEASON")
 plt.show()
+
