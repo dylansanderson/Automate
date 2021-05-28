@@ -18,6 +18,13 @@ Average price of modern warfare ps4: $42.42383333333332
 Median Price of modern warfare ps4: $41.5
 """
 
+
+"""
+
+Program No longer works as of April 2021 :(
+
+
+"""
 def average(listOfPrices):
     total = 0
     for i in listOfPrices:
