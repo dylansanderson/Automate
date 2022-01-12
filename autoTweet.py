@@ -46,4 +46,4 @@ t.login()
 while True:        
     t.send_tweet()
     sleep(random.randint(200,1500))            # Give time in between tweets to avoid Twitter's spam detection 
-t.quit()
+t.quit() # program will never reach this, unless True is changed to a counter
