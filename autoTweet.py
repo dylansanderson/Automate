@@ -8,19 +8,21 @@ Auto-tweeting program. Signs into account and tweets the current time 'HH:MM:SS'
 """   
 
 class Twitter:
-    def __init__(self):
+    def __init__(self,email,password):
         self.driver = webdriver.Chrome(executable_path=r"C:\Users\dylan\Desktop\chromedriver.exe") #path to your chrome driver
         self.driver.maximize_window()
+        self.email = email
+        self.password = password
     def login(self):
         self.driver.get("https://twitter.com/i/flow/login")
         sleep(2)
                
         emailInputBox = self.driver.find_element_by_xpath('//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div[5]/label/div/div[2]/div/input')
-        emailInputBox.send_keys("someEmail@somedomain.com")
+        emailInputBox.send_keys(self.email)
         nextBTN = self.driver.find_element_by_xpath('//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div[6]/div').click()
         sleep(1)
         try:
-            PWentry = self.driver.find_element_by_xpath('//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div[3]/div/label/div/div[2]/div[1]/input').send_keys("YOURPASSWORD")
+            PWentry = self.driver.find_element_by_xpath('//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div[3]/div/label/div/div[2]/div[1]/input').send_keys(self.password)
             loginBTN = self.driver.find_element_by_xpath('//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div/div').click()
             sleep(1)
         except Exception: #exception if prompted for extra verification.. input phone number
@@ -41,7 +43,7 @@ class Twitter:
         self.driver.quit()
         print("Closing Driver")
 
-t = Twitter()
+t = Twitter("email@domain.com","PASSWORD123")
 t.login()
 while True:        
     t.send_tweet()
