@@ -40,6 +40,8 @@ searchQuery = searchQuery.replace(' ','+')      #replace spaces with '+' to feed
 #searchQuery = urllib.parse.quote(searchQuery)
 print(searchQuery)
 
+
+
 pageNumber = 1
 now = time.time()
 while len(listOfPrices) < 60:
