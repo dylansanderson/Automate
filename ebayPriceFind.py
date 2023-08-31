@@ -1,6 +1,7 @@
 from time import sleep
 import bs4 as BeautifulSoup
 import urllib.request
+import urllib.parse
 import statistics
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,7 +24,7 @@ Median Price of modern warfare ps4: $41.5
 
 Program No longer works as of April 2021 :(
 
-
+Update June 2023: Somehow program works as expected again
 """
 def average(listOfPrices):
     total = 0
@@ -35,12 +36,13 @@ inputList = []
 discardedResults = []
 listOfPrices = []
 searchQuery = input("enter an item to search for on eBay")
-searchQuery = searchQuery.replace(' ','+')      #replace spaces with '+' to feed into url request
+searchQuery = searchQuery.replace(' ','+')      #replace spaces with '+' to feed into url requests
+#searchQuery = urllib.parse.quote(searchQuery)
 print(searchQuery)
 
 pageNumber = 1
 now = time.time()
-while pageNumber < 3:
+while len(listOfPrices) < 60:
     url = urllib.request.urlopen('https://www.ebay.com/sch/i.html?&_nkw=' + searchQuery + '&_sacat=0&rt=nc&LH_Sold=1&LH_Complete=1&_blrs=spell_check&_pgn='+str(pageNumber)).read()  #ebay url of search query
     soup = BeautifulSoup.BeautifulSoup(url,'lxml')
     prices = soup.find_all('span',class_='s-item__price')    #find the price of each item on the page
@@ -52,31 +54,36 @@ while pageNumber < 3:
             priceString = float(priceString)
             listOfPrices.append(priceString)
         else:
-            discardedResults.append(priceString)          
+            discardedResults.append(priceString)
+    print("Found " + str(len(listOfPrices)) + " transactions so far. Finishing result page #" + str(pageNumber))          
     pageNumber += 1
 
 runTime = time.time() - now
+median = statistics.median(listOfPrices)
 
-for _ in range(int(len(listOfPrices)/4)):
+for _ in range(3):
     listOfPrices.remove(max(listOfPrices))           #for better precision, remove the max and min of the list n times before calculating avg. and median
     listOfPrices.remove(min(listOfPrices))
 median = statistics.median(listOfPrices)
 
 print("Runtime: " + str(runTime) + " seconds")
-
+print("median: " + str(median))
+validPrices = []
+print(listOfPrices)
 for p in listOfPrices:
-    if (p <= (0.55)*median or p >= 1.95*median):          #remove extraneous results
-        print("REMOVING " + str(p))
-        listOfPrices.remove(p)
+    if (p > (0.4)*median and p < 1.6*median):          #remove extraneous results
+        validPrices.append(p)
+    else:
+        print("Extraneous result for price: " + str(p))
 
-for i in range(0,len(listOfPrices)):
+for i in range(0,len(validPrices)):
     inputList.append(i)
 
 median = str(round(median,2))
-print("Found "+str(len(listOfPrices)) +" recently completed/sold transactions for "+ searchQuery + " on eBay: " + "\n")
-print(listOfPrices)
+print("Found "+str(len(validPrices)) +" recently completed/sold transactions for "+ searchQuery + " on eBay: " + "\n")
+print(validPrices)
 print("\n")
-avg = average(listOfPrices)
+avg = average(validPrices)
 avg = str(round(avg,2))
 searchQuery = searchQuery.replace('+',' ') 
 print("Average price of " +searchQuery + ": $" +str(avg) + "\n")
@@ -84,10 +91,10 @@ print("Median Price of " + searchQuery + ": $" + median)
 print("Disregarding " + str(len(discardedResults)) + " Results: " + "\n")
 print(discardedResults)
 #find Mean Average Deviation
-yIncrement = np.mean(np.absolute(listOfPrices-np.mean(listOfPrices)))
-yTickList = np.arange(min(listOfPrices) - min(listOfPrices)/10,max(listOfPrices) + max(listOfPrices)/10,yIncrement)
-plt.plot(inputList,listOfPrices,'r^')
-plt.ylim(0.95*min(listOfPrices),max(listOfPrices))
+yIncrement = np.mean(np.absolute(validPrices-np.mean(validPrices)))
+yTickList = np.arange(min(validPrices) - min(validPrices)/10,max(validPrices) + max(validPrices)/10,yIncrement)
+plt.plot(inputList,validPrices,'r^')
+plt.ylim(0.95*min(validPrices),max(validPrices))
 plt.axhspan(0.95*float(median), 1.05*float(median), color='yellow', alpha=0.6)         #highlight region of importance
 plt.yticks(yTickList)
 plt.xlabel("search result number")
